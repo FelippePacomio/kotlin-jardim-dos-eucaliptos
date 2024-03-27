@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/baseline_home_24"/>
+
+    <item
+        android:id="@+id/events"
+        android:title="Events"
+        android:icon="@drawable/baseline_event_24" />
+
+    <item
+        android:id="@+id/news"
+        android:title="News"
+        android:icon="@drawable/baseline_newspaper_24"  />
+
+    <item
+        android:id="@+id/donations"
+        android:title="Donations"
+        android:icon="@drawable/baseline_favorite_24" />
+
+
+</menu>
