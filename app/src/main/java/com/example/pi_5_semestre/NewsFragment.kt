@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +16,7 @@ private const val ARG_PARAM2 = "param2"
 
 class NewsFragment : Fragment() {
 
-    private var newsList: List<NewsItem> = listOf()
+    private var newsList: List<NewsItem> = arrayListOf()
     private lateinit var newsRecyclerView: RecyclerView
     private lateinit var newsAdapter: NewsAdapter
 
@@ -40,17 +41,41 @@ class NewsFragment : Fragment() {
         newsList = generateNewsItems()
         newsRecyclerView = rootView.findViewById(R.id.newsRecyclerView)
         newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        newsRecyclerView.setHasFixedSize(true)
         newsAdapter = NewsAdapter(newsList)
-        newsRecyclerView.adapter = newsAdapter
+        val adapter = NewsAdapter(newsList)
+        newsRecyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object : NewsAdapter.onItemClickListener {
+            override fun onItemClick(position: Int) {
+                Toast.makeText(requireContext(), "News clicked!", Toast.LENGTH_SHORT).show()
+            }
+        })
         return rootView
     }
+
 
     private fun generateNewsItems(): List<NewsItem> {
         val newsItems = mutableListOf<NewsItem>()
         newsItems.add(NewsItem(R.drawable.newsimage1, "Confira nossa agenda para a Páscoa 2024!"))
-        newsItems.add(NewsItem(R.drawable.newsimage2, "Aprenda a fazer um pão de queijo com gostinho de tapioca!"))
-        newsItems.add(NewsItem(R.drawable.newsimage3, "A equipe está maior! Conheça nossos novos patrocínios!"))
-        newsItems.add(NewsItem(R.drawable.newsimage4, "Ainda não ouviu falar sobre nossa associação? Saiba um pouquinho sobre nossa história!"))
+        newsItems.add(
+            NewsItem(
+                R.drawable.newsimage2,
+                "Aprenda a fazer um pão de queijo com gostinho de tapioca!"
+            )
+        )
+        newsItems.add(
+            NewsItem(
+                R.drawable.newsimage3,
+                "A equipe está maior! Conheça nossos novos patrocínios!"
+            )
+        )
+        newsItems.add(
+            NewsItem(
+                R.drawable.newsimage4,
+                "Ainda não ouviu falar sobre nossa associação? Saiba um pouquinho sobre nossa história!"
+            )
+        )
         return newsItems
     }
+
 }

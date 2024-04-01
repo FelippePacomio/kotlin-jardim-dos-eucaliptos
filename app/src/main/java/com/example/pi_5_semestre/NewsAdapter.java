@@ -13,6 +13,16 @@ import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
 
+    private onItemClickListener mListener;
+
+    public interface onItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(onItemClickListener listener) {
+        mListener = listener;
+    }
+
     private List<NewsItem> newsList;
 
     public NewsAdapter(List<NewsItem> newsList) {
@@ -22,8 +32,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
-        return new NewsViewHolder(itemView);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_news, parent, false);
+        return new NewsViewHolder(itemView, mListener);
     }
 
     @Override
@@ -38,15 +48,26 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         return newsList.size();
     }
 
-
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
         ImageView newsThumbnail;
         TextView newsTitle;
 
-        public NewsViewHolder(@NonNull View itemView) {
+        public NewsViewHolder(@NonNull View itemView, final onItemClickListener listener) {
             super(itemView);
             newsThumbnail = itemView.findViewById(R.id.newsThumbnail);
             newsTitle = itemView.findViewById(R.id.newsTitle);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

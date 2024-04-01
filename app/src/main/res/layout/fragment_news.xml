@@ -11,8 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/newsRecyclerView"
-    android:padding="16dp"
-    android:layout_marginTop="60dp"
-    android:layout_marginBottom="60dp"/>
+    android:padding="4dp"
+    android:layout_marginTop="62dp" />
 
 </FrameLayout>
