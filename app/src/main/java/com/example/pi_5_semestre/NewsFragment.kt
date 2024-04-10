@@ -56,7 +56,7 @@ class NewsFragment : Fragment() {
 
     private fun generateNewsItems(): List<NewsItem> {
         val newsItems = mutableListOf<NewsItem>()
-        newsItems.add(NewsItem(R.drawable.newsimage1, "Confira nossa agenda para a Páscoa 2024!"))
+        newsItems.add(NewsItem(R.drawable.pascoa02, "Confira como foi nossa Páscoa 2024!"))
         newsItems.add(
             NewsItem(
                 R.drawable.newsimage2,
@@ -75,7 +75,15 @@ class NewsFragment : Fragment() {
                 "Ainda não ouviu falar sobre nossa associação? Saiba um pouquinho sobre nossa história!"
             )
         )
+
+        newsItems.add(
+            NewsItem(
+                R.drawable.sorteio,
+                "Venha conferir o vencedor do sorteio do Ovo de Chocolate dessa Páscoa!"
+            )
+        )
         return newsItems
     }
+
 
 }
