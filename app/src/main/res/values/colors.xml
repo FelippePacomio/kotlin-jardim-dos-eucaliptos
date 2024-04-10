@@ -55,7 +55,10 @@
     <color name="BurlyWood">#DEB887</color>
     <color name="Plum">#DDA0DD</color>
     <color name="Gainsboro">#DCDCDC</color>
-    <color name="Crimson">#DC143C</color>
+    <color name="crimson">#DC143C</color>
+    <color name="redJd">#942324</color>
+    <color name="titleJd">#ff3131</color>
+    <color name="toolbarJd">#700506</color>
     <color name="PaleVioletRed">#DB7093</color>
     <color name="Goldenrod">#DAA520</color>
     <color name="Orchid">#DA70D6</color>
@@ -71,7 +74,7 @@
     <color name="RosyBrown">#BC8F8F</color>
     <color name="MediumOrchid">#BA55D3</color>
     <color name="DarkGoldenrod">#B8860B</color>
-    <color name="FireBrick">#B22222</color>
+    <color name="fireBrick">#B22222</color>
     <color name="PowderBlue">#B0E0E6</color>
     <color name="LightSteelBlue">#B0C4DE</color>
     <color name="PaleTurquoise">#AFEEEE</color>

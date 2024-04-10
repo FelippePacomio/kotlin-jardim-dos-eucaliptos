@@ -11,6 +11,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="Donations"
-        android:textColor="@color/greenjc"
+        android:textColor="@color/titleJd"
         android:textSize="30dp" />
 </FrameLayout>

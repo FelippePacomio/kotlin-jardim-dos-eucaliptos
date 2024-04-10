@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/loginbkg"
+    android:background="@drawable/jddoseucaliptoslogin"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".LoginFragment">
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/custom_edittext"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="Login"
                 android:textAlignment="center"
-                android:textColor="@color/greenjc"
+                android:textColor="@color/titleJd"
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
-                android:backgroundTint="@color/greenjc"
+                android:backgroundTint="@color/titleJd"
                 android:text="Login"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
