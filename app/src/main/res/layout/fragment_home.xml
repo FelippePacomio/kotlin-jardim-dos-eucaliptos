@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/image_slider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Home"
-        android:textColor="@color/titleJd"
-        android:textSize="30dp" />
-</FrameLayout>
+        android:layout_height="250dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="62dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:iss_auto_cycle="true"
+        app:iss_delay="3000"
+        app:iss_period="3000"
+        app:iss_placeholder="@color/grey"
+        app:iss_error_image="@color/grey"
+        app:iss_corner_radius="20"
+        app:iss_selected_dot="@drawable/default_selected_dot"
+        app:iss_unselected_dot="@drawable/default_unselected_dot"
+        app:iss_text_align="CENTER" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
