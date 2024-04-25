@@ -1,14 +1,15 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
-    namespace = "com.example.pi_5_semestre"
+    namespace = "com.example.associacao_jardim_eucaliptos"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.pi_5_semestre"
+        applicationId = "com.example.associacao_jardim_eucaliptos"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -42,6 +43,8 @@ android {
 
 dependencies {
 
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
