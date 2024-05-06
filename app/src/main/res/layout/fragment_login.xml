@@ -85,10 +85,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        android:layout_marginTop="15dp"
         android:padding="8dp"
         android:text="Ainda não é cadastrado? Cadastre-se agora"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:textSize="16sp" />
+
 
 </LinearLayout>

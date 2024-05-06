@@ -2,9 +2,14 @@ package com.example.associacao_jardim_eucaliptos
 
 import android.content.Context
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
 
@@ -36,20 +41,40 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        val view = inflater.inflate(R.layout.fragment_login, container, false)
+
+        val textView = view.findViewById<TextView>(R.id.signupText)
+
+        val signupPrefix = getString(R.string.signup_text_prefix)
+        val signupLink = getString(R.string.signup_link)
+
+        val fullText = "$signupPrefix $signupLink"
+
+        val spannableString = SpannableString(fullText)
+
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(widget: View) {
+                // Navega para o fragment_events
+                val fragment = SignUpFragment()
+                val transaction = requireActivity().supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.fragment_container, fragment)
+                transaction.addToBackStack(null)
+                transaction.commit()
+            }
+        }
+
+        val startIndex = fullText.indexOf(signupLink)
+        val endIndex = startIndex + signupLink.length
+
+        spannableString.setSpan(clickableSpan, startIndex, endIndex, 0)
+
+        textView.text = spannableString
+        textView.movementMethod = LinkMovementMethod.getInstance()
+
+        return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SignUpFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             LoginFragment().apply {
@@ -64,13 +89,12 @@ class LoginFragment : Fragment() {
         super.onAttach(context)
         if (context is MainActivity) {
             mainActivity = context
-            mainActivity.hideToolbarAndBottomNavigation() // Oculta a Toolbar e o Bottom Navigation View
+            mainActivity.hideToolbarAndBottomNavigation()
         }
     }
 
     override fun onDetach() {
         super.onDetach()
-        mainActivity.showToolbarAndBottomNavigation() // Restaura a Toolbar e o Bottom Navigation View
+        mainActivity.showToolbarAndBottomNavigation()
     }
-
 }
