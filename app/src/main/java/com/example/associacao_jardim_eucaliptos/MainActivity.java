@@ -110,9 +110,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (itemId == R.id.nav_share) {
             // replaceFragment(new LoginFragment());
             Toast.makeText(MainActivity.this, "Share!", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.nav_talk_to_us) {
-            // replaceFragment(new LoginFragment());
-            Toast.makeText(MainActivity.this, "Talk to Us!", Toast.LENGTH_SHORT).show();
         } else {
             // Log para capturar IDs desconhecidos
             Log.e("MainActivity", "Unknown item selected with ID: " + itemId);

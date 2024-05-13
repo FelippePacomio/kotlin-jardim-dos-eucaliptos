@@ -302,7 +302,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/person_pin/baseline_person_pin_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/content_copy/baseline_content_copy_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -312,8 +312,7 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="baseline_person_pin_24" />
+                            <entry key="outputName" value="baseline_content_copy_24" />
                             <entry key="sourceFile" value="C:\Users\felip\AndroidStudioProjects\PI5SEMESTRE" />
                           </map>
                         </option>

@@ -4,22 +4,22 @@
 
     <item
         android:id="@+id/home"
-        android:title="Home"
+        android:title="Início"
         android:icon="@drawable/baseline_home_24"/>
 
     <item
         android:id="@+id/events"
-        android:title="Events"
+        android:title="Eventos"
         android:icon="@drawable/baseline_event_24" />
 
     <item
         android:id="@+id/news"
-        android:title="News"
+        android:title="Notícias"
         android:icon="@drawable/baseline_newspaper_24"  />
 
     <item
         android:id="@+id/donations"
-        android:title="Donations"
+        android:title="Doações"
         android:icon="@drawable/baseline_favorite_24" />
 
 
