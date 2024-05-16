@@ -38,7 +38,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="40dp"
@@ -46,7 +46,7 @@
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="8dp"
                 android:drawableTint="@color/black"
-                android:hint="Username"
+                android:hint="E-mail"
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background" />
@@ -60,7 +60,7 @@
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="8dp"
                 android:drawableTint="@color/black"
-                android:hint="Password"
+                android:hint="Senha"
                 android:inputType="textPassword"
                 android:padding="8dp"
                 android:textColor="@color/black"
@@ -72,7 +72,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
                 android:backgroundTint="@color/titleJd"
-                android:text="Login"
+                android:text="Entrar"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
 

@@ -23,7 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpFragment extends Fragment {
 
-    private EditText signupName, signupEmail, signupUsername, signupPassword;
+    private EditText signupName, signupEmail, signupPassword;
     private TextView loginRedirectText;
     private Button signupButton;
     private FirebaseDatabase database;
@@ -46,24 +46,23 @@ public class SignUpFragment extends Fragment {
                 database = FirebaseDatabase.getInstance();
                 reference = database.getReference("users");
 
-                String nomeUsuario = signupName.getText().toString();
-                String emailUsuario = signupEmail.getText().toString();
-                String senhaUsuario = signupPassword.getText().toString();
+                String name = signupName.getText().toString();
+                String email = signupEmail.getText().toString();
+                String password = signupPassword.getText().toString();
+                String userId = reference.push().getKey();
 
-                HelperClass helperClass = new HelperClass(nomeUsuario, emailUsuario, senhaUsuario);
-                reference.child(nomeUsuario).setValue(helperClass);
+                HelperClass helperClass = new HelperClass(name, email, password);
+                reference.child(userId).setValue(helperClass);
 
-                Toast.makeText(getContext(), "Você foi Cadastrado com Sucesso!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), LoginFragment.class);
-                startActivity(intent);
+                Toast.makeText(getContext(), "Você foi cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
+                requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
         loginRedirectText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), LoginFragment.class);
-                startActivity(intent);
+                requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
 

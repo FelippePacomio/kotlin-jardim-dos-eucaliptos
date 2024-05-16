@@ -148,4 +148,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
+
 }
