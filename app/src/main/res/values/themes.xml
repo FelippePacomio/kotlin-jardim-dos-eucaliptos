@@ -10,6 +10,10 @@
         <item name="android:windowExitAnimation">@anim/slide_out</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/titleJd</item>
+    </style>
 
     <style name="Theme.JardimdosEucaliptos" parent="Base.Theme.JardimdosEucaliptos" />
     <style name="ThemeOverlay.AppCompat.navTheme">

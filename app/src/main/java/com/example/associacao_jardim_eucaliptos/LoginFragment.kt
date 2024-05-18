@@ -192,6 +192,7 @@ class LoginFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 // Handle onCancelled
             }
+
         })
     }
 
