@@ -1,5 +1,6 @@
 package com.example.associacao_jardim_eucaliptos;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,10 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.associacao_jardim_eucaliptos.HelperClass;
-import com.example.associacao_jardim_eucaliptos.LoginFragment;
-import com.example.associacao_jardim_eucaliptos.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,21 +32,39 @@ public class SignUpFragment extends Fragment {
     private Button signupButton;
     private FirebaseDatabase database;
     private DatabaseReference reference;
+    private FirebaseAuth mAuth;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Intent intent = new Intent(requireContext(), MainActivity.class);
+            startActivity(intent);
+            requireActivity().finish(); // Finish the current MainActivity
+        }
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_singup, container, false);
 
+
+        mAuth = FirebaseAuth.getInstance();
         signupName = view.findViewById(R.id.signup_name);
         signupEmail = view.findViewById(R.id.signup_email);
         signupPassword = view.findViewById(R.id.signup_password);
         signupButton = view.findViewById(R.id.signup_button);
         loginRedirectText = view.findViewById(R.id.loginRedirectText);
 
+
+
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 database = FirebaseDatabase.getInstance();
                 reference = database.getReference("users");
 
@@ -56,6 +78,20 @@ public class SignUpFragment extends Fragment {
 
                 Toast.makeText(getContext(), "Você foi cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
                 requireActivity().getSupportFragmentManager().popBackStack();
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Toast.makeText(getContext(), "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(getContext(), "Falha ao criar conta!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
 
@@ -67,5 +103,9 @@ public class SignUpFragment extends Fragment {
         });
 
         return view;
+
+
     }
+
+
 }

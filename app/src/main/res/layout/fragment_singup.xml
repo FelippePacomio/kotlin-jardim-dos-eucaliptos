@@ -72,6 +72,8 @@
 
             <Button
                 android:id="@+id/signup_button"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/titleJd"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"

@@ -302,7 +302,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/content_copy/baseline_content_copy_24.xml" />
+                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/calendar_today/baseline_calendar_today_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -312,8 +312,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="baseline_content_copy_24" />
-                            <entry key="sourceFile" value="C:\Users\felip\AndroidStudioProjects\PI5SEMESTRE" />
+                            <entry key="outputName" value="baseline_calendar_today_24" />
+                            <entry key="sourceFile" value="C:\Users\felip\Downloads\splashscreen.svg" />
                           </map>
                         </option>
                       </PersistentState>

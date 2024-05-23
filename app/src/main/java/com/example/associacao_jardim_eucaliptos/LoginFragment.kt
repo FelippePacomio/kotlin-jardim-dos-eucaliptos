@@ -12,31 +12,37 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 private lateinit var mainActivity: MainActivity
 private lateinit var email: EditText
 private lateinit var password: EditText
 private lateinit var loginButton: Button
+private lateinit var auth: FirebaseAuth
 
-/**
- * A simple [Fragment] subclass.
- * Use the [LoginFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class LoginFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    override fun onStart() {
+        super.onStart()
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish() // Finish the current MainActivity
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,8 +50,8 @@ class LoginFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        auth = FirebaseAuth.getInstance()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,17 +60,13 @@ class LoginFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
         val textView = view.findViewById<TextView>(R.id.signupText)
-
         email = view.findViewById(R.id.email)
         password = view.findViewById(R.id.password)
         loginButton = view.findViewById(R.id.loginButton)
 
-
         val signupPrefix = getString(R.string.signup_text_prefix)
         val signupLink = getString(R.string.signup_link)
-
         val fullText = "$signupPrefix $signupLink"
-
         val spannableString = SpannableString(fullText)
 
         loginButton.setOnClickListener { view ->
@@ -73,11 +75,24 @@ class LoginFragment : Fragment() {
             } else {
                 checkUser()
             }
+
+            auth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        val user = auth.currentUser
+                        Toast.makeText(requireContext(), "Login realizado", Toast.LENGTH_SHORT).show()
+                        // Handle user login success
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Toast.makeText(requireContext(), "Authentication failed", Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                // Navega para o fragment_events
+                // Navigate to SignUpFragment
                 val fragment = SignUpFragment()
                 val transaction = requireActivity().supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.fragment_container, fragment)
@@ -88,7 +103,6 @@ class LoginFragment : Fragment() {
 
         val startIndex = fullText.indexOf(signupLink)
         val endIndex = startIndex + signupLink.length
-
         spannableString.setSpan(clickableSpan, startIndex, endIndex, 0)
 
         textView.text = spannableString
@@ -123,30 +137,29 @@ class LoginFragment : Fragment() {
 
     fun validateEmail(): Boolean {
         val value = email.text.toString()
-        if (value.isEmpty()) {
+        return if (value.isEmpty()) {
             email.error = "O campo e-mail não pode estar em branco!"
-            return false
+            false
         } else {
             email.error = null
-            return true
+            true
         }
     }
 
     fun validatePassword(): Boolean {
         val value = password.text.toString()
-        if (value.isEmpty()) {
+        return if (value.isEmpty()) {
             password.error = "O campo senha não pode estar em branco!"
-            return false
+            false
         } else {
             password.error = null
-            return true
+            true
         }
     }
 
     fun checkUser() {
         val emailStr = email.text.toString().trim()
         val passwordStr = password.text.toString().trim()
-
         val reference = FirebaseDatabase.getInstance().getReference("users")
         val checkUserDatabase = reference.orderByChild("email").equalTo(emailStr)
 
@@ -162,15 +175,10 @@ class LoginFragment : Fragment() {
                                 val passwordFromDB = userSnapshot.child("password").getValue(String::class.java)
 
                                 if (passwordFromDB != null && passwordFromDB == passwordStr) {
-                                    val fragment = HomeFragment()
-                                    val transaction = requireActivity().supportFragmentManager.beginTransaction()
-                                    transaction.replace(R.id.fragment_container, fragment)
-                                    transaction.addToBackStack(null)
-                                    transaction.commit()
-
-                                    val mainActivity = requireActivity() as? MainActivity
-                                    mainActivity?.showToolbarAndBottomNavigation()
-
+                                    // Start a new instance of MainActivity
+                                    val intent = Intent(requireContext(), MainActivity::class.java)
+                                    startActivity(intent)
+                                    requireActivity().finish() // Finish the current MainActivity
                                 } else {
                                     // Password does not match, show error
                                     password.error = "Credenciais inválidas!"
@@ -192,14 +200,6 @@ class LoginFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 // Handle onCancelled
             }
-
         })
     }
-
-
 }
-
-
-
-
-
