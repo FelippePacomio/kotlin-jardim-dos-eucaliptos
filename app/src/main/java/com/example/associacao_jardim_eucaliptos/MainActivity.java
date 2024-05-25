@@ -124,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int itemId = item.getItemId();
         if (itemId == R.id.nav_login) {
             replaceFragment(new LoginFragment());
-        } else if (itemId == R.id.nav_about) {
-            Toast.makeText(MainActivity.this, "About us!", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.nav_settings) {
             Toast.makeText(MainActivity.this, "Settings!", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.nav_share) {
@@ -134,7 +132,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(new ManageEventFragment());
         } else if (itemId == R.id.nav_gnews) {
             replaceFragment(new ManageNewsFragment());
-        } else {
+        } else if (itemId == R.id.nav_about) {
+            replaceFragment(new AboutUsFragment());
+        }
+        else {
             Log.e("MainActivity", "Unknown item selected with ID: " + itemId);
         }
         drawerLayout.closeDrawer(GravityCompat.START);

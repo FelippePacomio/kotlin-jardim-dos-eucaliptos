@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroundaboutus"
+    tools:context=".AboutUsFragment">
+
+    <!-- Back arrow at top left -->
+    <ImageView
+        android:id="@+id/back_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_arrow_back_24"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp" />
+
+    <!-- Content container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/back_arrow"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/texto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:text="@string/about_us"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#ECDFDF"
+            android:textAlignment="textStart"
+            android:textSize="18sp"
+            android:layout_marginTop="90dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="cursive"
+            android:text="Fale conosco!"
+            android:textAlignment="center"
+            android:textColor="#ECDFDF"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp" />
+    </LinearLayout>
+
+    <!-- Social icons at the bottom center -->
+    <RelativeLayout
+        android:id="@+id/social_icons_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp">
+
+        <ImageView
+            android:id="@+id/whatsapp_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/whatsapp_icone"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/social_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="(11) 97950-3524"
+            android:textColor="#ECDFDF"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/whatsapp_icon"
+            android:layout_marginStart="8dp" />
+
+        <TextView
+            android:id="@+id/social_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="\@associacaojdeucaliptos"
+            android:textColor="#ECDFDF"
+            android:textSize="12sp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/instagram_icon"
+            android:layout_marginStart="8dp" />
+
+        <ImageView
+            android:id="@+id/instagram_icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/instagram_icon"
+            android:layout_toEndOf="@id/whatsapp_icon"
+            android:layout_marginStart="136dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
