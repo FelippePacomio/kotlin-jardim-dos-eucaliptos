@@ -45,4 +45,10 @@ class AboutUsFragment : Fragment() {
             startActivity(instagramIntent)
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Show the action bar and bottom navigation
+        (activity as? MainActivity)?.showToolbarAndBottomNavigation()
+    }
 }

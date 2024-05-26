@@ -1,5 +1,9 @@
 package com.example.associacao_jardim_eucaliptos;
 
+import static java.security.AccessController.getContext;
+
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -9,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -35,8 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BottomAppBar bottomAppBar;
     private Toolbar toolbar;
     private NavigationView navigationView;
-    FirebaseUser user;
-    FirebaseAuth auth;
+    private FirebaseAuth auth;
     private boolean isAdmin = false;
 
     @Override
@@ -44,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*--------------------- Initialize variables ---------------------*/
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -80,42 +83,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentManager = getSupportFragmentManager();
         replaceFragment(new HomeFragment());
 
-        // Check if user is admin and then update the navigation view
-        checkIfUserIsAdmin(isAdmin -> {
-            MainActivity.this.isAdmin = isAdmin;
-            Log.d("MainActivity", "isAdmin: " + isAdmin);
-            updateNavigationView();
-        });
-        /* --------- Test: Is user logged? ---------
         auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        if (user == null) {
-            Log.d("MainActivity", "Usuario nao logado" + user);
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null) {
+            Log.d("MainActivity", "User logged in: " + user.getUid());
+            updateUI(user);
+        } else {
+            Log.d("MainActivity", "User not logged in");
+            updateNavigationMenu(false, false);
         }
-        else{
-            Log.d("MainActivity", "Usuario logado" + user);
-        } */
     }
 
-    public void updateNavigationView() {
-        Menu menu = navigationView.getMenu();
-        MenuItem navGevents = menu.findItem(R.id.nav_gevents);
-        MenuItem navGnews = menu.findItem(R.id.nav_gnews);
-        MenuItem navLogin = menu.findItem(R.id.nav_login);
+    public void updateUI(FirebaseUser user) {
+        Log.d("MainActivity", "updateUI called for user: " + user.getUid());
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HelperClass userData = snapshot.getValue(HelperClass.class);
+                if (userData != null) {
+                    Log.d("MainActivity", "User data retrieved: " + userData.toString());
+                    isAdmin = userData.admin;
+                    updateNavigationMenu(true, isAdmin);
+                } else {
+                    Log.d("MainActivity", "User data is null");
+                    updateNavigationMenu(true, false);
+                }
+            }
 
-        if (isUserLoggedIn()) {
-            navLogin.setVisible(false);
-            navGevents.setVisible(isAdmin);
-            navGnews.setVisible(isAdmin);
-        } else {
-            navLogin.setVisible(true);
-            navGevents.setVisible(false);
-            navGnews.setVisible(false);
-        }
-        Log.d("MainActivity", "Is UserLoggedIn? " + isUserLoggedIn());
-        Log.d("MainActivity", "navLogin visible: " + navLogin.isVisible());
-        Log.d("MainActivity", "navGevents visible: " + navGevents.isVisible());
-        Log.d("MainActivity", "navGnews visible: " + navGnews.isVisible());
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w("MainActivity", "loadUser:onCancelled", error.toException());
+            }
+        });
+    }
+
+    public void updateNavigationMenu(boolean isLoggedIn, boolean isAdmin) {
+        Log.d("MainActivity", "Updating navigation menu. isLoggedIn: " + isLoggedIn + ", isAdmin: " + isAdmin);
+        Menu menu = navigationView.getMenu();
+        menu.findItem(R.id.nav_login).setVisible(!isLoggedIn);
+        menu.findItem(R.id.nav_gevents).setVisible(isAdmin);
+        menu.findItem(R.id.nav_gnews).setVisible(isAdmin);
+        menu.findItem(R.id.nav_signout).setVisible(isLoggedIn || isAdmin);
     }
 
     @Override
@@ -134,12 +143,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(new ManageNewsFragment());
         } else if (itemId == R.id.nav_about) {
             replaceFragment(new AboutUsFragment());
-        }
-        else {
+        } else if (itemId == R.id.nav_signout) {
+            showLogoutConfirmationDialog();
+        } else {
             Log.e("MainActivity", "Unknown item selected with ID: " + itemId);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showLogoutConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Tem certeza que deseja sair da conta?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        ProgressUtils.showProgressDialog(MainActivity.this);
+                        FirebaseAuth.getInstance().signOut();
+                        replaceFragment(new HomeFragment());
+                        updateNavigationMenu(false, false);
+                        ProgressUtils.hideProgressDialog();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
@@ -150,6 +178,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.fragment_container, new HomeFragment())
                     .commit();
         } else if (fragment instanceof ManageEventFragment) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .commit();
+        } else if (fragment instanceof AboutUsFragment) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .commit();
+        } else if (fragment instanceof ManageNewsFragment) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new HomeFragment())
                     .commit();
@@ -175,55 +211,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setVisibility(View.VISIBLE);
         bottomAppBar.setVisibility(View.VISIBLE);
     }
-
-    private boolean isUserLoggedIn() {
-        return FirebaseAuth.getInstance().getCurrentUser() != null;
-    }
-
-    private void checkIfUserIsAdmin(AdminCheckCallback callback) {
-        if (isUserLoggedIn()) {
-            Log.d("MainActivity", "admin: " + isAdmin);
-            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
-            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
-                        Boolean isAdmin = snapshot.child("admin").getValue(Boolean.class);
-                        if (isAdmin == null) {
-                            isAdmin = false;
-                        }
-                        Log.d("MainActivity", "isAdmin value from Firebase: " + isAdmin);
-                        callback.onCheckComplete(isAdmin);
-                    } else {
-                        Log.d("MainActivity", "User snapshot does not exist");
-                        callback.onCheckComplete(false);
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    Log.d("MainActivity", "Database error: " + error.getMessage());
-                    callback.onCheckComplete(false);
-                }
-            });
-        } else {
-            callback.onCheckComplete(false);
-        }
-    }
-
-
-    private interface AdminCheckCallback {
-        void onCheckComplete(boolean isAdmin);
-    }
-
-   /* public void reloadFragment() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (fragment != null) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.detach(fragment);
-            fragmentTransaction.attach(fragment);
-            fragmentTransaction.commit();
-        }
-    }*/
 }

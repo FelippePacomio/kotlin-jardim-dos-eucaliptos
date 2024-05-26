@@ -1,11 +1,13 @@
 package com.example.associacao_jardim_eucaliptos
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +17,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -43,7 +44,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -69,25 +69,35 @@ class LoginFragment : Fragment() {
         val fullText = "$signupPrefix $signupLink"
         val spannableString = SpannableString(fullText)
 
-        loginButton.setOnClickListener { view ->
+        loginButton.setOnClickListener {
+
             if (!validateEmail() || !validatePassword()) {
                 // Handle invalid email or password
             } else {
-                checkUser()
+                ProgressUtils.showProgressDialog(requireContext())
+                auth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
+                    .addOnCompleteListener(requireActivity()) { task ->
+                        ProgressUtils.hideProgressDialog()
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "signInWithEmailAndPassword: success")
+                            val currentUser = auth.currentUser
+                            if (currentUser != null) {
+                                checkIfUserIsAdmin(currentUser.uid) { isAdmin ->
+                                    mainActivity.updateNavigationMenu(true, isAdmin)
+                                    navigateToHomeFragment() // Go back to MainActivity
+                                }
+                            } else {
+                                Log.e(TAG, "Current user is null after successful authentication")
+                                Toast.makeText(requireContext(), "Erro ao obter usuário atual", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Log.e(TAG, "signInWithEmailAndPassword: failure", task.exception)
+                            Toast.makeText(requireContext(), "Authentication failed", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
             }
 
-            auth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        Toast.makeText(requireContext(), "Login realizado", Toast.LENGTH_SHORT).show()
-                        // Handle user login success
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Toast.makeText(requireContext(), "Authentication failed", Toast.LENGTH_SHORT).show()
-                    }
-                }
         }
 
         val clickableSpan = object : ClickableSpan() {
@@ -109,17 +119,6 @@ class LoginFragment : Fragment() {
         textView.movementMethod = LinkMovementMethod.getInstance()
 
         return view
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            LoginFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 
     override fun onAttach(context: Context) {
@@ -157,49 +156,25 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun checkUser() {
-        val emailStr = email.text.toString().trim()
-        val passwordStr = password.text.toString().trim()
-        val reference = FirebaseDatabase.getInstance().getReference("users")
-        val checkUserDatabase = reference.orderByChild("email").equalTo(emailStr)
-
-        checkUserDatabase.addListenerForSingleValueEvent(object : ValueEventListener {
+    private fun checkIfUserIsAdmin(uid: String, callback: (Boolean) -> Unit) {
+        val userRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    for (userSnapshot in snapshot.children) {
-                        val userId = userSnapshot.key // Retrieve the user's unique identifier
-                        val userRef = reference.child(userId!!) // Construct the database reference for the user
-                        // Now, query the user's password
-                        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(userSnapshot: DataSnapshot) {
-                                val passwordFromDB = userSnapshot.child("password").getValue(String::class.java)
-
-                                if (passwordFromDB != null && passwordFromDB == passwordStr) {
-                                    // Start a new instance of MainActivity
-                                    val intent = Intent(requireContext(), MainActivity::class.java)
-                                    startActivity(intent)
-                                    requireActivity().finish() // Finish the current MainActivity
-                                } else {
-                                    // Password does not match, show error
-                                    password.error = "Credenciais inválidas!"
-                                    password.requestFocus()
-                                }
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                            }
-                        })
-                    }
-                } else {
-                    // User does not exist, show error
-                    email.error = "Esse usuário não existe!"
-                    email.requestFocus()
-                }
+                val userData = snapshot.getValue(HelperClass::class.java)
+                callback(userData?.admin ?: false)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Handle onCancelled
+                callback(false)
             }
         })
+    }
+
+    private fun navigateToHomeFragment() {
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, HomeFragment())
+        transaction.addToBackStack(null)
+        transaction.commit()
+        mainActivity.showToolbarAndBottomNavigation()
     }
 }

@@ -1,19 +1,31 @@
 package com.example.associacao_jardim_eucaliptos;
 
-public class HelperClass{
+public class HelperClass {
+    private String name;
+    private String email;
+    private String password;
+     boolean admin;
 
-    String name, email, password;
-    boolean admin;
+    // No-argument constructor
+    public HelperClass() {
+    }
 
-
+    // Constructor with arguments
     public HelperClass(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.admin = false;
+        this.admin = false; // Default value
     }
 
+    public HelperClass(String name, String email, String password, boolean admin) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.admin = false; // Default value
+    }
 
+    // Getters and setters
     public String getName() {
         return name;
     }
@@ -38,8 +50,11 @@ public class HelperClass{
         this.password = password;
     }
 
-    public boolean isAdmin() {return admin;}
+    public boolean isAdmin() {
+        return admin;
+    }
 
-    public void setAdmin(boolean admin) {this.admin = admin;}
-
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 }

@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1047996575212",
+    "firebase_url": "https://piods2-default-rtdb.firebaseio.com",
     "project_id": "piods2",
     "storage_bucket": "piods2.appspot.com"
   },
