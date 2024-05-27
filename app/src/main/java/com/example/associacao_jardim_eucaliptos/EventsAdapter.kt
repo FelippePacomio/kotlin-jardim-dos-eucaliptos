@@ -7,28 +7,31 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
-class EventsAdapter constructor(
+class EventsAdapter(
     private val eventsList: List<EventsItem>
-) :
-    RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
+) : RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
+
     private var listener: OnItemClickListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventsAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_events, parent, false)
         return MyViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: EventsAdapter.MyViewHolder, position: Int) {
-        holder.eventsTitle.text = eventsList[position].eventsTitle
-        holder.eventsImage.setImageResource(eventsList[position].eventsImage)
-      /*  holder.cardView.setOnClickListener {
-            Toast.makeText(this, eventsList[position].eventsTitle, Toast.LENGTH_SHORT).show()
-        }*/
-            val currentItem = eventsList[position]
-            holder.itemView.setOnClickListener {
-                listener?.onItemClick(currentItem)
-            }
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        val currentItem = eventsList[position]
+        holder.eventsTitle.text = currentItem.eventsTitle
+        Glide.with(holder.itemView.context).load(currentItem.eventsImage).into(holder.eventsImage)
+
+        holder.itemView.setOnClickListener {
+            listener?.onItemClick(currentItem)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return eventsList.size
     }
 
     interface OnItemClickListener {
@@ -37,10 +40,6 @@ class EventsAdapter constructor(
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
-    }
-
-    override fun getItemCount(): Int {
-        return eventsList.size
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

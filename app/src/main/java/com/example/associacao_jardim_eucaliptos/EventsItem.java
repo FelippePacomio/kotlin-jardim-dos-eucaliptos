@@ -2,15 +2,15 @@ package com.example.associacao_jardim_eucaliptos;
 
 public class EventsItem {
 
-    private int eventsImage;
+    private String eventsImage;
     private String eventsTitle;
 
-    public EventsItem(int eventsImage, String eventsTitle) {
+    public EventsItem(String eventsImage, String eventsTitle) {
         this.eventsImage = eventsImage;
         this.eventsTitle = eventsTitle;
     }
 
-    public int getEventsImage() {
+    public String getEventsImage() {
         return eventsImage;
     }
 

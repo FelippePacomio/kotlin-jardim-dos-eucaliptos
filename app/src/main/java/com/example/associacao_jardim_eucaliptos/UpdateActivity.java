@@ -15,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,7 +84,7 @@ public class UpdateActivity extends AppCompatActivity {
             key = bundle.getString("Key");
             oldImageURL = bundle.getString("Image");
         }
-        databaseReference = FirebaseDatabase.getInstance().getReference("Android Tutorials").child(key);
+        databaseReference = FirebaseDatabase.getInstance().getReference("events").child(key);
 
         updateImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +165,13 @@ public class UpdateActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     if (uri != null && oldImageURL != null) {
                         StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(oldImageURL);
-                        reference.delete();
+                        reference.delete().addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Handle failure of deleting the old image
+                                Log.e("UpdateActivity", "Failed to delete old image: " + e.getMessage());
+                            }
+                        });
                     }
                     Toast.makeText(UpdateActivity.this, "Evento atualizado", Toast.LENGTH_SHORT).show();
                     if (dialog != null) {
@@ -185,4 +192,5 @@ public class UpdateActivity extends AppCompatActivity {
             }
         });
     }
+
 }

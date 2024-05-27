@@ -1,5 +1,6 @@
 package com.example.associacao_jardim_eucaliptos;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -86,7 +88,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void deleteEvent() {
-        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Android Tutorials");
+        final DatabaseReference reference = FirebaseDatabase.getInstance().getReference("events");
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReferenceFromUrl(imageUrl);
         storageReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -97,6 +99,13 @@ public class DetailActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             }
-        }).addOnFailureListener(e -> Toast.makeText(DetailActivity.this, "Ocorreu um erro ao deletar o evento", Toast.LENGTH_SHORT).show());
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(DetailActivity.this, "Ocorreu um erro ao deletar o evento: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                reference.child(key).removeValue();  // Optionally remove the database entry even if image deletion fails
+            }
+        });
     }
+
 }

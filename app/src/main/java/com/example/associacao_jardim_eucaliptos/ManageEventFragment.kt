@@ -48,7 +48,7 @@ class ManageEventFragment : Fragment() {
         adapter = ManageEventAdapter(requireContext(), dataList)
         recyclerView.adapter = adapter
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Android Tutorials")
+        databaseReference = FirebaseDatabase.getInstance().getReference("events")
         dialog.show()
         eventListener = databaseReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

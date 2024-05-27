@@ -37,6 +37,13 @@ public class DataClass {
         this.dataLang = dataLang;
         this.dataImage = dataImage;
     }
+
+    public DataClass(String dataTitle, String dataDesc, String dataImage) {
+        this.dataTitle = dataTitle;
+        this.dataDesc = dataDesc;
+        this.dataImage = dataImage;
+    }
+
     public DataClass(){
 
     }

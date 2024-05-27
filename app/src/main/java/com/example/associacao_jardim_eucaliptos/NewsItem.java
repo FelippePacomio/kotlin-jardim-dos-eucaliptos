@@ -2,15 +2,15 @@ package com.example.associacao_jardim_eucaliptos;
 
 public class NewsItem {
 
-    private int newsThumbail;
+    private String newsThumbail;
     private String newsTitle;
 
-    public NewsItem(int newsThumbail, String newsTitle) {
+    public NewsItem(String newsThumbail, String newsTitle) {
         this.newsThumbail = newsThumbail;
         this.newsTitle = newsTitle;
     }
 
-    public int getNewsThumbail() {
+    public String getNewsThumbnail() {
         return newsThumbail;
     }
 
