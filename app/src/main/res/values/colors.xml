@@ -6,6 +6,14 @@
     <color name="redJd">#942324</color>
     <color name="titleJd">#ff3131</color>
     <color name="toolbarJd">#700506</color>
+    <color name="backgroundLight">#FFFFFF</color>
+    <color name="surfaceLight">#FFFFFF</color>
+    <color name="onPrimaryLight">#FFFFFF</color>
+    <color name="onBackgroundLight">#000000</color>
+    <color name="backgroundDark">#121212</color>
+    <color name="surfaceDark">#1E1E1E</color>
+    <color name="onPrimaryDark">#000000</color>
+    <color name="onBackgroundDark">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="lavender">#8692f7</color>
     <color name="grey">#808080</color>

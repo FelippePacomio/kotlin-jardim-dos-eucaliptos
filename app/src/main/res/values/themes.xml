@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Base.Theme.JardimdosEucaliptos" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/toolbarJd</item>
-        <item name="colorOnPrimary">@color/toolbarJd</item>
-         <item name="colorPrimaryVariant">@color/toolbarJd</item>
-        <!-- <item name="colorSecondary">@color/toolbarJd</item> -->
-        <!--  <item name="colorOnSecondary">@color/toolbarJd</item> -->
-        <!-- <item name="colorSecondaryVariant">@color/toolbarJd</item> -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+            <item name="colorPrimary">@color/titleJd</item>
+            <item name="colorOnPrimary">@color/onPrimaryLight</item>
+            <item name="colorPrimaryVariant">@color/toolbarJd</item>
+            <item name="android:colorBackground">@color/backgroundLight</item>
+            <item name="colorSurface">@color/surfaceLight</item>
+            <item name="colorOnBackground">@color/onBackgroundLight</item>
+            <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="DialogAnimation">
