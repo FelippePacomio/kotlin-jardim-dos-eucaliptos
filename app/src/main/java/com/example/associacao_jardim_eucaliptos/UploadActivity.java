@@ -30,7 +30,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class UploadActivity extends AppCompatActivity {
 
@@ -57,23 +59,19 @@ public class UploadActivity extends AppCompatActivity {
         uploadLang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Mostrar DatePickerDialog
                 new DatePickerDialog(UploadActivity.this, (datePicker, year, month, day) -> {
-                    // Atualizar o calendário com a data selecionada
                     calendar.set(year, month, day);
-                    // Mostrar TimePickerDialog
                     new TimePickerDialog(UploadActivity.this, (timePicker, hour, minute) -> {
-                        // Atualizar o calendário com o horário selecionado
                         calendar.set(Calendar.HOUR_OF_DAY, hour);
                         calendar.set(Calendar.MINUTE, minute);
-                        // Formatar data e hora selecionadas
-                        String dateTime = DateFormat.getDateTimeInstance().format(calendar.getTime());
-                        // Definir texto no TextView
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                        String dateTime = dateFormat.format(calendar.getTime());
                         uploadLang.setText(dateTime);
                     }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
 
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),

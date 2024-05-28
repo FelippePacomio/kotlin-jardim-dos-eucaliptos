@@ -35,7 +35,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class UpdateActivity extends AppCompatActivity {
 
@@ -104,12 +106,14 @@ public class UpdateActivity extends AppCompatActivity {
                     new TimePickerDialog(UpdateActivity.this, (timePicker, hour, minute) -> {
                         calendar.set(Calendar.HOUR_OF_DAY, hour);
                         calendar.set(Calendar.MINUTE, minute);
-                        String dateTime = DateFormat.getDateTimeInstance().format(calendar.getTime());
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+                        String dateTime = dateFormat.format(calendar.getTime());
                         updateLang.setText(dateTime);
                     }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
 
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override

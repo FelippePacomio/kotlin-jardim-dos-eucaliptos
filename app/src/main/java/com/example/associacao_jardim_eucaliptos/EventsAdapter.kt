@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 class EventsAdapter(
-    private val eventsList: List<EventsItem>
+    private val eventsList: List<EventsItem>,
+    private val onItemClickListener: (EventsItem) -> Unit
 ) : RecyclerView.Adapter<EventsAdapter.MyViewHolder>() {
-
-    private var listener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_events, parent, false)
@@ -26,20 +25,12 @@ class EventsAdapter(
         Glide.with(holder.itemView.context).load(currentItem.eventsImage).into(holder.eventsImage)
 
         holder.itemView.setOnClickListener {
-            listener?.onItemClick(currentItem)
+            onItemClickListener(currentItem)
         }
     }
 
     override fun getItemCount(): Int {
         return eventsList.size
-    }
-
-    interface OnItemClickListener {
-        fun onItemClick(item: EventsItem)
-    }
-
-    fun setOnItemClickListener(listener: OnItemClickListener) {
-        this.listener = listener
     }
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -30,7 +30,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class UploadNewsActivity extends AppCompatActivity {
 
@@ -116,11 +118,11 @@ public class UploadNewsActivity extends AppCompatActivity {
     public void uploadData() {
         String title = uploadTopic.getText().toString();
         String desc = uploadDesc.getText().toString();
-        String timestamp = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());  // Get current timestamp
+        String timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());  // Get current timestamp
 
         DataClass dataClass = new DataClass(title, desc, timestamp, imageURL);  // Pass timestamp as dataLang
 
-        FirebaseDatabase.getInstance().getReference("news").child(timestamp)  // Use timestamp as key
+        FirebaseDatabase.getInstance().getReference("news").child(timestamp.replace("/", "-").replace(" ", "_"))  // Use timestamp as key
                 .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -137,3 +139,4 @@ public class UploadNewsActivity extends AppCompatActivity {
                 });
     }
 }
+

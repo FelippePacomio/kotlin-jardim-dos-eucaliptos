@@ -28,6 +28,7 @@ private lateinit var mainActivity: MainActivity
 private lateinit var email: EditText
 private lateinit var password: EditText
 private lateinit var loginButton: Button
+private lateinit var forgotPasswordButton: Button
 private lateinit var auth: FirebaseAuth
 
 class LoginFragment : Fragment() {
@@ -63,6 +64,7 @@ class LoginFragment : Fragment() {
         email = view.findViewById(R.id.email)
         password = view.findViewById(R.id.password)
         loginButton = view.findViewById(R.id.loginButton)
+        forgotPasswordButton = view.findViewById(R.id.forgotPasswordButton)
 
         val signupPrefix = getString(R.string.signup_text_prefix)
         val signupLink = getString(R.string.signup_link)
@@ -98,6 +100,23 @@ class LoginFragment : Fragment() {
 
             }
 
+        }
+
+        forgotPasswordButton.setOnClickListener {
+            val emailAddress = email.text.toString().trim()
+            if (emailAddress.isEmpty()) {
+                email.error = "Por favor, insira seu e-mail!"
+                email.requestFocus()
+            } else {
+                auth.sendPasswordResetEmail(emailAddress)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(requireContext(), "Email de recuperação de senha enviado.", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(requireContext(), "Erro ao enviar email de recuperação.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            }
         }
 
         val clickableSpan = object : ClickableSpan() {

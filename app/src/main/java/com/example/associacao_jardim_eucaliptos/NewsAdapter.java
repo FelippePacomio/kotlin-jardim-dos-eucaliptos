@@ -26,8 +26,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         this.listener = listener;
     }
 
-    public NewsAdapter(List<NewsItem> newsList) {
+    public NewsAdapter(List<NewsItem> newsList, OnItemClickListener listener) {
         this.newsList = newsList;
+        this.listener = listener;
     }
 
     @NonNull

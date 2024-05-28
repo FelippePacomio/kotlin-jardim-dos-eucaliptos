@@ -29,6 +29,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class UpdateNewsActivity extends AppCompatActivity {
 
     ImageView updateImage;
@@ -73,7 +77,16 @@ public class UpdateNewsActivity extends AppCompatActivity {
             key = bundle.getString("Key");
             oldImageURL = bundle.getString("Image");
             lang = bundle.getString("Language");  // Get the timestamp
+
+            SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            try {
+                Date date = originalFormat.parse(lang);
+                lang = originalFormat.format(date);  // Reformat to the desired format if needed
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+
         databaseReference = FirebaseDatabase.getInstance().getReference("news").child(key);
 
         updateImage.setOnClickListener(new View.OnClickListener() {

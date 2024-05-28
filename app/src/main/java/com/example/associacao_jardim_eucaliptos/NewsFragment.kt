@@ -18,22 +18,17 @@ class NewsFragment : Fragment() {
     private lateinit var databaseReference: DatabaseReference
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_news, container, false)
         newsRecyclerView = rootView.findViewById(R.id.newsRecyclerView)
         newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         newsRecyclerView.setHasFixedSize(true)
-        newsAdapter = NewsAdapter(newsList)
+        newsAdapter = NewsAdapter(newsList) { news ->
+            openNewsDetailFragment(news)
+        }
         newsRecyclerView.adapter = newsAdapter
-
-        newsAdapter.setOnItemClickListener(object : NewsAdapter.OnItemClickListener {
-            override fun onItemClick(item: NewsItem) {
-                Toast.makeText(requireContext(), "News clicked: ${item.newsTitle}", Toast.LENGTH_SHORT).show()
-            }
-        })
 
         databaseReference = FirebaseDatabase.getInstance().getReference("news")
         fetchNewsFromDatabase(databaseReference)
@@ -47,10 +42,12 @@ class NewsFragment : Fragment() {
                 newsList.clear()
                 for (newsSnapshot in dataSnapshot.children) {
                     val newsTitle = newsSnapshot.child("dataTitle").getValue(String::class.java)
-                    val newsImage = newsSnapshot.child("dataImage").getValue(String::class.java)
+                    val newsThumbnail = newsSnapshot.child("dataImage").getValue(String::class.java)
+                    val newsDescription = newsSnapshot.child("dataDesc").getValue(String::class.java)
+                    val newsDate = newsSnapshot.child("dataLang").getValue(String::class.java)
 
-                    if (newsTitle != null && newsImage != null) {
-                        val newsItem = NewsItem(newsImage, newsTitle)
+                    if (newsTitle != null && newsThumbnail != null && newsDescription != null && newsDate != null) {
+                        val newsItem = NewsItem(newsThumbnail, newsTitle, newsDescription, newsDate)
                         newsList.add(newsItem)
                     }
                 }
@@ -61,5 +58,10 @@ class NewsFragment : Fragment() {
                 Toast.makeText(requireContext(), "Failed to load news", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun openNewsDetailFragment(news: NewsItem) {
+        val fragment = NewsDetailFragment.newInstance(news.newsTitle, news.newsThumbnail, news.newsDescription, news.newsDate)
+        fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)?.addToBackStack(null)?.commit()
     }
 }
