@@ -53,7 +53,6 @@ public class UploadNewsActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.saveNewsButton);
 
 
-
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -101,7 +100,7 @@ public class UploadNewsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete());
+                while (!uriTask.isComplete()) ;
                 Uri urlImage = uriTask.getResult();
                 imageURL = urlImage.toString();
                 uploadData();
@@ -118,16 +117,16 @@ public class UploadNewsActivity extends AppCompatActivity {
     public void uploadData() {
         String title = uploadTopic.getText().toString();
         String desc = uploadDesc.getText().toString();
-        String timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());  // Get current timestamp
+        String timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date());
 
-        DataClass dataClass = new DataClass(title, desc, timestamp, imageURL);  // Pass timestamp as dataLang
+        DataClass dataClass = new DataClass(title, desc, timestamp, imageURL);
 
         FirebaseDatabase.getInstance().getReference("news").child(timestamp.replace("/", "-").replace(" ", "_"))  // Use timestamp as key
                 .setValue(dataClass).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(UploadNewsActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadNewsActivity.this, "Notícia criada com sucesso", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }

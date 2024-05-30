@@ -1,14 +1,13 @@
 package com.example.associacao_jardim_eucaliptos;
 
-import static java.security.AccessController.getContext;
-
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private NavigationView navigationView;
     private FirebaseAuth auth;
+    private FirebaseAuth.AuthStateListener authStateListener;
+    private ImageView userIcon;
+    private TextView welcomeText, userIdForHeader;
     private boolean isAdmin = false;
 
     @Override
@@ -49,14 +51,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.custom_toolbar);
         setSupportActionBar(toolbar);
 
+        navigationView = findViewById(R.id.navigation_drawer);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        navigationView = findViewById(R.id.navigation_drawer);
+        View headerView = navigationView.getHeaderView(0);
+        userIcon = headerView.findViewById(R.id.userIcon);
+        welcomeText = headerView.findViewById(R.id.welcomeText);
+        userIdForHeader = headerView.findViewById(R.id.userId);
+
         navigationView.setNavigationItemSelectedListener(this);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -84,13 +91,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         replaceFragment(new HomeFragment());
 
         auth = FirebaseAuth.getInstance();
-        FirebaseUser user = auth.getCurrentUser();
-        if (user != null) {
-            Log.d("MainActivity", "User logged in: " + user.getUid());
-            updateUI(user);
-        } else {
-            Log.d("MainActivity", "User not logged in");
-            updateNavigationMenu(false, false);
+        authStateListener = firebaseAuth -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                Log.d("MainActivity", "User logged in: " + user.getUid());
+                updateUI(user);
+            } else {
+                Log.d("MainActivity", "User not logged in");
+                updateNavigationMenu(false, false);
+            }
+        };
+
+        auth.addAuthStateListener(authStateListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (auth != null && authStateListener != null) {
+            auth.removeAuthStateListener(authStateListener);
         }
     }
 
@@ -105,6 +124,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.d("MainActivity", "User data retrieved: " + userData.toString());
                     isAdmin = userData.admin;
                     updateNavigationMenu(true, isAdmin);
+                    userIcon.setVisibility(View.VISIBLE);
+                    welcomeText.setVisibility(View.VISIBLE);
+                    userIdForHeader.setVisibility(View.VISIBLE);
+                    userIdForHeader.setText(userData.getName());
                 } else {
                     Log.d("MainActivity", "User data is null");
                     updateNavigationMenu(true, false);
@@ -125,6 +148,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         menu.findItem(R.id.nav_gevents).setVisible(isAdmin);
         menu.findItem(R.id.nav_gnews).setVisible(isAdmin);
         menu.findItem(R.id.nav_signout).setVisible(isLoggedIn || isAdmin);
+        userIcon.setVisibility(isLoggedIn ? View.VISIBLE : View.GONE);
+        welcomeText.setVisibility(isLoggedIn ? View.VISIBLE : View.GONE);
+        userIdForHeader.setVisibility(isLoggedIn ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -133,10 +159,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int itemId = item.getItemId();
         if (itemId == R.id.nav_login) {
             replaceFragment(new LoginFragment());
-        } else if (itemId == R.id.nav_settings) {
-            Toast.makeText(MainActivity.this, "Settings!", Toast.LENGTH_SHORT).show();
-        } else if (itemId == R.id.nav_share) {
-            Toast.makeText(MainActivity.this, "Share!", Toast.LENGTH_SHORT).show();
         } else if (itemId == R.id.nav_gevents) {
             replaceFragment(new ManageEventFragment());
         } else if (itemId == R.id.nav_gnews) {
@@ -146,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (itemId == R.id.nav_signout) {
             showLogoutConfirmationDialog();
         } else {
-            Log.e("MainActivity", "Unknown item selected with ID: " + itemId);
+            Log.e("MainActivity", "Item desconhecido selecionado com o ID: " + itemId);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -154,16 +176,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void showLogoutConfirmationDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Logout")
+                .setTitle("Sair")
                 .setMessage("Tem certeza que deseja sair da conta?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        ProgressUtils.showProgressDialog(MainActivity.this);
-                        FirebaseAuth.getInstance().signOut();
-                        replaceFragment(new HomeFragment());
-                        updateNavigationMenu(false, false);
-                        ProgressUtils.hideProgressDialog();
-                    }
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    ProgressUtils.showProgressDialog(MainActivity.this);
+                    FirebaseAuth.getInstance().signOut();
+                    replaceFragment(new HomeFragment());
+                    updateNavigationMenu(false, false);
+                    ProgressUtils.hideProgressDialog();
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)

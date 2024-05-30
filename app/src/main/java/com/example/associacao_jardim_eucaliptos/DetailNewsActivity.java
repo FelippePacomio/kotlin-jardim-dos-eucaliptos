@@ -38,13 +38,13 @@ public class DetailNewsActivity extends AppCompatActivity {
         detailTitle = findViewById(R.id.detailNewsTitle);
         deleteButton = findViewById(R.id.deleteNewsButton);
         editButton = findViewById(R.id.editNewsButton);
-        detailDate = findViewById(R.id.detailNewsDate);  // This will display the timestamp
+        detailDate = findViewById(R.id.detailNewsDate);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             detailDesc.setText(bundle.getString("Description"));
             detailTitle.setText(bundle.getString("Title"));
-            detailDate.setText(bundle.getString("Language"));  // Get timestamp
+            detailDate.setText(bundle.getString("Language"));
             key = bundle.getString("Key");
             imageUrl = bundle.getString("Image");
             Glide.with(this).load(bundle.getString("Image")).into(detailImage);
@@ -81,7 +81,7 @@ public class DetailNewsActivity extends AppCompatActivity {
                         deleteNews();
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancelar", null)
                 .show();
     }
 

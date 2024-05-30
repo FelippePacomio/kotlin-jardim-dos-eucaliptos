@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/custom_toolbar"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/toolbarJd"
+    android:elevation="4dp"
+    android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <ImageView
+        android:id="@+id/toolbar_image"
+        android:layout_width="60dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="10dp"
+        android:layout_height="50dp"
+        android:src="@drawable/iconeucaliptos"
+        android:layout_gravity="start"
+        android:contentDescription="@string/toolbar_image_desc"/>
+
+    <TextView
+        android:id="@+id/toolbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Jardim dos Eucaliptos"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/toolbar_image"/>
+
+</androidx.appcompat.widget.Toolbar>

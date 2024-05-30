@@ -63,7 +63,7 @@ class EventsFragment : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Handle possible errors.
+
             }
         })
     }
@@ -77,11 +77,10 @@ class EventsFragment : Fragment() {
             val outputFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale("pt", "BR"))
             outputFormat.timeZone = TimeZone.getTimeZone("GMT-3")
 
-            // Translate month names from English to Portuguese
             val formattedDate = outputFormat.format(date!!)
             translateMonthNames(formattedDate)
         } catch (e: Exception) {
-            dateString // return original string if parsing fails
+            dateString
         }
     }
 

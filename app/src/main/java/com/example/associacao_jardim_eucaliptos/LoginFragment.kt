@@ -41,7 +41,7 @@ class LoginFragment : Fragment() {
         if (currentUser != null) {
             val intent = Intent(requireContext(), MainActivity::class.java)
             startActivity(intent)
-            requireActivity().finish() // Finish the current MainActivity
+            requireActivity().finish()
         }
     }
 
@@ -74,7 +74,7 @@ class LoginFragment : Fragment() {
         loginButton.setOnClickListener {
 
             if (!validateEmail() || !validatePassword()) {
-                // Handle invalid email or password
+
             } else {
                 ProgressUtils.showProgressDialog(requireContext())
                 auth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
@@ -94,7 +94,7 @@ class LoginFragment : Fragment() {
                             }
                         } else {
                             Log.e(TAG, "signInWithEmailAndPassword: failure", task.exception)
-                            Toast.makeText(requireContext(), "Authentication failed", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Falha ao autenticar", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -113,7 +113,7 @@ class LoginFragment : Fragment() {
                         if (task.isSuccessful) {
                             Toast.makeText(requireContext(), "Email de recuperação de senha enviado.", Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(requireContext(), "Erro ao enviar email de recuperação.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Erro ao enviar e-mail de recuperação.", Toast.LENGTH_SHORT).show()
                         }
                     }
             }
@@ -121,7 +121,6 @@ class LoginFragment : Fragment() {
 
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-                // Navigate to SignUpFragment
                 val fragment = SignUpFragment()
                 val transaction = requireActivity().supportFragmentManager.beginTransaction()
                 transaction.replace(R.id.fragment_container, fragment)

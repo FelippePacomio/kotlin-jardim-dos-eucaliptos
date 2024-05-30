@@ -23,15 +23,12 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
 
         initializeViews(rootView)
@@ -58,6 +55,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+
             }
         })
 
@@ -89,15 +87,17 @@ class HomeFragment : Fragment() {
                     if (index >= eventsFields.size) break
                     val eventTitle = eventSnapshot.child("dataTitle").getValue(String::class.java)
                     val eventImage = eventSnapshot.child("dataImage").getValue(String::class.java)
-                    if (eventTitle != null && eventImage != null) {
-                        setEventDataToCardView(index, eventImage, eventTitle)
+                    val eventDescription = eventSnapshot.child("dataDesc").getValue(String::class.java)
+                    val eventDate = eventSnapshot.child("dataLang").getValue(String::class.java)
+                    if (eventTitle != null && eventImage != null && eventDescription != null && eventDate != null) {
+                        setEventDataToCardView(index, eventImage, eventTitle, eventDescription, eventDate)
                         index++
                     }
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors
+
             }
         })
     }
@@ -111,66 +111,82 @@ class HomeFragment : Fragment() {
                     if (index >= newsFields.size) break
                     val newsTitle = newsSnapshot.child("dataTitle").getValue(String::class.java)
                     val newsImage = newsSnapshot.child("dataImage").getValue(String::class.java)
-                    if (newsTitle != null && newsImage != null) {
-                        setNewsDataToField(index, newsImage, newsTitle)
+                    val newsDescription = newsSnapshot.child("dataDesc").getValue(String::class.java)
+                    val newsDate = newsSnapshot.child("dataLang").getValue(String::class.java)
+                    if (newsTitle != null && newsImage != null && newsDescription != null && newsDate != null) {
+                        setNewsDataToField(index, newsImage, newsTitle, newsDescription, newsDate)
                         index++
                     }
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors
+
             }
         })
     }
 
-    private fun setEventDataToCardView(index: Int, imageUrl: String, title: String) {
-        // Find views in the card view
+    private fun setEventDataToCardView(index: Int, imageUrl: String, title: String, description: String, date: String) {
         val eventImageView = eventsFields[index][0] as ImageView
         val eventTitleView = eventsFields[index][1] as TextView
 
-        // Log to ensure views are not null
-        if (eventImageView == null || eventTitleView == null) {
-            Log.e("HomeFragment", "EventImageView or EventTitleView is null")
-            return
-        }
-
-        // Load image into ImageView using Glide or any other image loading library
-        if (!imageUrl.isNullOrEmpty()) {
-            Glide.with(requireContext())
-                .load(imageUrl)
-                .into(eventImageView)
-        } else {
-            // Handle case where imageUrl is null or empty
-            eventImageView.setImageResource(R.drawable.newsimage1)
-        }
-
-        // Set title to the TextView
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .into(eventImageView)
         eventTitleView.text = title
+
+        val eventData = EventDetailFragment.newInstance(title, imageUrl, description, date)
+        val bundle = Bundle().apply {
+            putString("eventTitle", title)
+            putString("eventImage", imageUrl)
+            putString("eventDescription", description)
+            putString("eventDate", date)
+        }
+
+        eventsFields[index][0].setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, eventData)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        eventsFields[index][1].setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, eventData)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
-    private fun setNewsDataToField(index: Int, imageUrl: String, title: String) {
-        // Find views in the news field
+    private fun setNewsDataToField(index: Int, imageUrl: String, title: String, description: String, date: String) {
         val newsThumbnailView = newsFields[index][0] as ImageView
         val newsTitleView = newsFields[index][1] as TextView
 
-        // Log to ensure views are not null
-        if (newsThumbnailView == null || newsTitleView == null) {
-            Log.e("HomeFragment", "NewsThumbnailView or NewsTitleView is null")
-            return
-        }
-
-        // Load image into ImageView using Glide or any other image loading library
-        if (!imageUrl.isNullOrEmpty()) {
-            Glide.with(requireContext())
-                .load(imageUrl)
-                .into(newsThumbnailView)
-        } else {
-            // Handle case where imageUrl is null or empty
-            newsThumbnailView.setImageResource(R.drawable.newsimage1)
-        }
-
-        // Set title to the TextView
+        Glide.with(requireContext())
+            .load(imageUrl)
+            .into(newsThumbnailView)
         newsTitleView.text = title
+
+        val newsData = NewsDetailFragment.newInstance(title, imageUrl, description, date)
+        val bundle = Bundle().apply {
+            putString("newsTitle", title)
+            putString("newsThumbnail", imageUrl)
+            putString("newsDescription", description)
+            putString("newsDate", date)
+        }
+
+        newsFields[index][0].setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, newsData)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        newsFields[index][1].setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, newsData)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 }

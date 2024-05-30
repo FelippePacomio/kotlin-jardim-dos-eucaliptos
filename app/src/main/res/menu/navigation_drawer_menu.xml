@@ -10,10 +10,10 @@
             android:icon="@drawable/baseline_login_24"
             android:title="Entrar" />
 
-        <item
+        <!-- <item
             android:id="@+id/nav_share"
             android:icon="@drawable/baseline_share_24"
-            android:title="Compartilhar" />
+            android:title="Compartilhar" /> -->
 
         <item
             android:id="@+id/nav_gevents"
@@ -25,16 +25,15 @@
             android:icon="@drawable/baseline_newspaper_24"
             android:title="Gerenciar notícias" />
 
-        <item
+        <!-- <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/baseline_settings_24"
-            android:title="Configurações" />
+            android:title="Configurações" /> -->
 
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/baseline_info_24"
             android:title="Sobre nós" />
-
 
         <item
             android:id="@+id/nav_signout"

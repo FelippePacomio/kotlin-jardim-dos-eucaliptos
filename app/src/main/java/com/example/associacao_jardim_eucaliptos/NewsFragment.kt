@@ -55,7 +55,7 @@ class NewsFragment : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Toast.makeText(requireContext(), "Failed to load news", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Falha ao carregar notícias", Toast.LENGTH_SHORT).show()
             }
         })
     }

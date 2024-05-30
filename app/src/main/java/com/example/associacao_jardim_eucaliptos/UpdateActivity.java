@@ -150,7 +150,6 @@ public class UpdateActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // No new image selected, use the old image URL
             imageUrl = oldImageURL;
             updateData(null);
         }

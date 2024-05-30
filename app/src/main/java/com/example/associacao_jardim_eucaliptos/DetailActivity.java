@@ -83,7 +83,7 @@ public class DetailActivity extends AppCompatActivity {
                         deleteEvent();
                     }
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancelar", null)
                 .show();
     }
 
@@ -103,7 +103,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(DetailActivity.this, "Ocorreu um erro ao deletar o evento: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                reference.child(key).removeValue();  // Optionally remove the database entry even if image deletion fails
+                reference.child(key).removeValue();
             }
         });
     }

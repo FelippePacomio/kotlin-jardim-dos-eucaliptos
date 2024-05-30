@@ -32,7 +32,6 @@ class DonationsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_donations, container, false)
 
         val chavePixText: TextView = view.findViewById(R.id.tv_chave_pix)
@@ -42,7 +41,6 @@ class DonationsFragment : Fragment() {
 
         val copyText = "57.281.735/0001-58"
 
-        // Function to copy text to clipboard
         fun copyToClipboard(text: String) {
             val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("PIX Key", text)
@@ -50,7 +48,6 @@ class DonationsFragment : Fragment() {
             Toast.makeText(getContext(), "Chave PIX Copiada!", Toast.LENGTH_SHORT).show()
         }
 
-        // Set click listeners to copy the text to clipboard
         val clickListener = View.OnClickListener {
             copyToClipboard(copyText)
         }

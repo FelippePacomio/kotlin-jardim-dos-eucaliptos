@@ -6,6 +6,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="signup_text_prefix">Ainda não é cadastrado? </string>
     <string name="signup_link">Cadastre-se agora</string>
+    <string name="toolbar_image_desc">Imagem da Toolbar</string>
 
 
     <style name="RoundCornerBottom">

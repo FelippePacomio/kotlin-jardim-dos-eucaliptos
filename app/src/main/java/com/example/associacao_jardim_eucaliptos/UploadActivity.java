@@ -53,7 +53,6 @@ public class UploadActivity extends AppCompatActivity {
         uploadLang = findViewById(R.id.uploadLang);
         saveButton = findViewById(R.id.saveButton);
 
-        // Inicializar Calendar para DateTime Picker
         Calendar calendar = Calendar.getInstance();
 
         uploadLang.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +82,7 @@ public class UploadActivity extends AppCompatActivity {
                             uri = data.getData();
                             uploadImage.setImageURI(uri);
                         } else {
-                            Toast.makeText(UploadActivity.this, "No Image Selected", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadActivity.this, "Nenhuma imagem selecionada", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -148,7 +147,7 @@ public class UploadActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(UploadActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadActivity.this, "Evento criado com sucesso", Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     }

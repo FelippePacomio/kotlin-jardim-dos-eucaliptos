@@ -100,13 +100,11 @@ class ManageNewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Hide the action bar and bottom navigation
         (activity as? MainActivity)?.hideToolbarAndBottomNavigation()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Show the action bar and bottom navigation
         (activity as? MainActivity)?.showToolbarAndBottomNavigation()
     }
 

@@ -76,12 +76,12 @@ public class UpdateNewsActivity extends AppCompatActivity {
             updateDesc.setText(bundle.getString("Description"));
             key = bundle.getString("Key");
             oldImageURL = bundle.getString("Image");
-            lang = bundle.getString("Language");  // Get the timestamp
+            lang = bundle.getString("Language");
 
             SimpleDateFormat originalFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
             try {
                 Date date = originalFormat.parse(lang);
-                lang = originalFormat.format(date);  // Reformat to the desired format if needed
+                lang = originalFormat.format(date);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -98,7 +98,6 @@ public class UpdateNewsActivity extends AppCompatActivity {
             }
         });
 
-        // Set the OnClickListener for the update button to call saveData()
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,7 +132,6 @@ public class UpdateNewsActivity extends AppCompatActivity {
                 }
             });
         } else {
-            // No new image selected, use the old image URL
             imageUrl = oldImageURL;
             updateData(null);
         }

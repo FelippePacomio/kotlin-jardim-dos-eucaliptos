@@ -6,26 +6,23 @@ public class HelperClass {
     private String password;
      boolean admin;
 
-    // No-argument constructor
     public HelperClass() {
     }
 
-    // Constructor with arguments
     public HelperClass(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.admin = false; // Default value
+        this.admin = false;
     }
 
     public HelperClass(String name, String email, String password, boolean admin) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.admin = false; // Default value
+        this.admin = false;
     }
 
-    // Getters and setters
     public String getName() {
         return name;
     }
