@@ -22,12 +22,6 @@ class AboutUsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as? MainActivity)?.hideToolbarAndBottomNavigation()
-        val backArrow: ImageView = view.findViewById(R.id.back_arrow)
-        backArrow.setOnClickListener {
-            val intent = Intent(activity, MainActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
-        }
 
         val whatsappIcon: ImageView = view.findViewById(R.id.whatsapp_icon)
         whatsappIcon.setOnClickListener {
@@ -48,7 +42,6 @@ class AboutUsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Show the action bar and bottom navigation
         (activity as? MainActivity)?.showToolbarAndBottomNavigation()
     }
 }

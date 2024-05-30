@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/custom_edittext"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">

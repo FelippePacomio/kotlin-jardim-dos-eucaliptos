@@ -1,12 +1,12 @@
 package com.example.associacao_jardim_eucaliptos
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
@@ -15,7 +15,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import android.util.Log
 
 class HomeFragment : Fragment() {
     private lateinit var eventsFields: Array<Array<View>>
@@ -30,7 +29,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val rootView = inflater.inflate(R.layout.fragment_home, container, false)
-
         initializeViews(rootView)
         fetchEventsFromFirebase(rootView)
         fetchNewsFromFirebase(rootView)

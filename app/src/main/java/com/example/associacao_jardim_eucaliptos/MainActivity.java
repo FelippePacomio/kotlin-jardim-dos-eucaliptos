@@ -2,6 +2,8 @@ package com.example.associacao_jardim_eucaliptos;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +51,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ProgressUtils.showProgressDialog(this);
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ProgressUtils.hideProgressDialog();
+            }
+        }, 3000);
 
         drawerLayout = findViewById(R.id.drawer_layout);
         toolbar = findViewById(R.id.custom_toolbar);
@@ -101,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 updateNavigationMenu(false, false);
             }
         };
-
         auth.addAuthStateListener(authStateListener);
     }
 
@@ -110,15 +120,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
         if (auth != null && authStateListener != null) {
             auth.removeAuthStateListener(authStateListener);
+
         }
     }
 
     public void updateUI(FirebaseUser user) {
+
         Log.d("MainActivity", "updateUI called for user: " + user.getUid());
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
+
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 HelperClass userData = snapshot.getValue(HelperClass.class);
                 if (userData != null) {
                     Log.d("MainActivity", "User data retrieved: " + userData.toString());
@@ -132,10 +146,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.d("MainActivity", "User data is null");
                     updateNavigationMenu(true, false);
                 }
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+
                 Log.w("MainActivity", "loadUser:onCancelled", error.toException());
             }
         });
@@ -151,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userIcon.setVisibility(isLoggedIn ? View.VISIBLE : View.GONE);
         welcomeText.setVisibility(isLoggedIn ? View.VISIBLE : View.GONE);
         userIdForHeader.setVisibility(isLoggedIn ? View.VISIBLE : View.GONE);
+
     }
 
     @Override

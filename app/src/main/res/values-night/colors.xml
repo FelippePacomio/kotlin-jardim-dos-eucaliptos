@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="titleJd">#ff6b6b</color>
-    <color name="toolbarJd">#b22222</color>
+    <color name="toolbarJd">#700506</color>
     <color name="backgroundDark">#121212</color>
     <color name="surfaceDark">#1E1E1E</color>
     <color name="onPrimaryDark">#000000</color>
