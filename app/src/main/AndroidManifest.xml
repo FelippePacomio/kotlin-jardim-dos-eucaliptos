@@ -17,6 +17,7 @@
 
         <activity
             android:name=".SplashScreenActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,20 +27,27 @@
 
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true"
             android:label="">
         </activity>
-        <activity android:name=".UploadActivity">
+        <activity android:name=".UploadActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".UpdateActivity">
+        <activity android:name=".UpdateActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".DetailActivity">
+        <activity android:name=".DetailActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".UploadNewsActivity">
+        <activity android:name=".UploadNewsActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".UpdateNewsActivity">
+        <activity android:name=".UpdateNewsActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".DetailNewsActivity">
+        <activity android:name=".DetailNewsActivity"
+            android:screenOrientation="portrait">
         </activity>
 
     </application>

@@ -17,6 +17,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/custom_edittext"
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="30dp"
         app:cardElevation="20dp">
 
@@ -45,10 +46,11 @@
                 android:background="@drawable/custom_edittext"
                 android:drawableStart="@drawable/baseline_person_24"
                 android:drawablePadding="8dp"
-                android:drawableTint="@color/black"
+                android:drawableTint="@color/black2"
                 android:hint="E-mail"
+                android:textColorHint="@color/black2"
                 android:padding="8dp"
-                android:textColor="@color/black"
+                android:textColor="@color/black2"
                 android:textColorHighlight="@color/cardview_dark_background" />
 
             <EditText
@@ -59,11 +61,12 @@
                 android:background="@drawable/custom_edittext"
                 android:drawableStart="@drawable/baseline_lock_24"
                 android:drawablePadding="8dp"
-                android:drawableTint="@color/black"
+                android:drawableTint="@color/black2"
                 android:hint="Senha"
+                android:textColorHint="@color/black2"
                 android:inputType="textPassword"
                 android:padding="8dp"
-                android:textColor="@color/black"
+                android:textColor="@color/black2"
                 android:textColorHighlight="@color/cardview_dark_background" />
 
             <Button
@@ -102,7 +105,7 @@
         android:padding="8dp"
         android:text="Ainda não é cadastrado? Cadastre-se agora"
         android:textAlignment="center"
-        android:textColor="@color/black"
+        android:textColor="@color/black2"
         android:textSize="16sp" />
 
 

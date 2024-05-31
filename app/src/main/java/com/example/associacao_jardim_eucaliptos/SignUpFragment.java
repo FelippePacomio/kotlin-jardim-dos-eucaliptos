@@ -70,6 +70,18 @@ public class SignUpFragment extends Fragment {
                     return;
                 }
 
+                // Verificando se o email termina com @gmail, @hotmail ou @outlook
+                if (!email.toLowerCase().endsWith("@gmail.com") && !email.toLowerCase().endsWith("@hotmail.com") && !email.toLowerCase().endsWith("@outlook.com")) {
+                    Toast.makeText(getContext(), "O e-mail deve terminar com @gmail.com, @hotmail.com ou @outlook.com", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // Verificando se a senha contém pelo menos uma letra maiúscula
+                if (!password.matches(".*[A-Z].*")) {
+                    Toast.makeText(getContext(), "A senha deve conter pelo menos uma letra maiúscula", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 ProgressUtils.showProgressDialog(getContext());
 
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -109,6 +121,7 @@ public class SignUpFragment extends Fragment {
                         });
             }
         });
+
 
         loginRedirectText.setOnClickListener(new View.OnClickListener() {
             @Override
